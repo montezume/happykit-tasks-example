@@ -1,12 +1,5 @@
 import Parser from "rss-parser";
 import { NextApiRequest, NextApiResponse } from "next";
-// import createSendmail from "sendmail";
-import util from "util";
-
-// const sendmail = util.promisify(createSendmail());
-
-// Replace this with your own secret
-const taskSecret = "totally-secret";
 
 const parser: Parser = new Parser();
 
