@@ -1,13 +1,28 @@
 import Parser from "rss-parser";
 import { NextApiRequest, NextApiResponse } from "next";
+// import createSendmail from "sendmail";
+import util from "util";
+
+// const sendmail = util.promisify(createSendmail());
+
+// Replace this with your own secret
+const taskSecret = "totally-secret";
 
 const parser: Parser = new Parser();
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { publication, days = '30' } = req.query;
+interface ApiRequest extends NextApiRequest {
+  body: {
+    publication: string;
+    days: number;
+  }
+}
+
+export default async (req: ApiRequest, res: NextApiResponse) => {
+  const { publication = 'frontend-digest', days = 30 } = req.body;
+
   const feed = await parser.parseURL(`https://medium.com/feed/${publication}`);
   const date = new Date();
-  date.setDate(date.getDate() - Number(days));
+  date.setDate(date.getDate() - days);
   
   const { items } = feed;
   const filteredItems = items?.filter(item => {
